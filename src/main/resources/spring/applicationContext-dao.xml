@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+
+    <!--配置数据源, 事务管理, SqlSessionFactory, mapper扫描器-->
+
+
+    <!--加载配置文件-->
+    <context:property-placeholder location="classpath:db.properties"/>
+
+
+    <!--数据库连接池-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbc.driver}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+
+    <!--让 Spring管理 sqlSessionFactory-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--数据库连接池-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--加载 mybatis全局配置文件-->
+        <property name="configLocation" value="classpath:mybatis/sqlMapConfig.xml"/>
+        <!--配置 mapper.xml文件的位置, 扫描映射文件, 可以使用 Ant风格的路径格式-->
+        <property name="mapperLocations" value="classpath:sqlmap/**/*.xml"/>
+    </bean>
+
+
+
+    <!--
+    mapper扫描器
+      MapperScannerConfigurer自动扫描, 将 mapper接口生成的代理注入到 spring
+        1. basePackage 属性是让你为映射器接口文件设置基本的包路径。
+           你可以使用分号或逗号 作为分隔符设置多于一个的包路径。每个映射器将会在指定的包路径中递归地被搜索到。
+        2. 没有必要去指定 SqlSessionFactory 或 SqlSessionTemplate ,
+            因为 MapperScannerConfigurer将会创建 MapperFactoryBean, 之后自动装配。
+        3.
+
+
+
+    -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--扫描的包路径-->
+        <property name="basePackage" value="cn.zhitong.kcsj.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+
+        <!--下面配置会导致 db.properties不能正常加载, 最终连不上数据库-->
+        <!--<property name="sqlSessionFactory" ref="sqlSessionFactory"/>-->
+    </bean>
+
+
+
+</beans>

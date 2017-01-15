@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <!--配置 mysql的驱动-->
+    <classPathEntry location="D:\software\server\maven\.m2\repository\mysql\mysql-connector-java\5.1.38\mysql-connector-java-5.1.38.jar" />
+    <context id="MYSQLTables" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!--配置数据库连接-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/kcsj"
+                        userId="root" password="root">
+        </jdbcConnection>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!--
+        生成数据模型的配置
+          targetPackage: 指定生成数据模型的对象的包名
+          targetProject: 生成 po类的位置
+            enableSubPackages: 是否让 schema作为包的后缀
+            trimStrings: 从数据库返回的值被清理前后的空格
+        -->
+        <javaModelGenerator targetPackage="cn.zhitong.kcsj.po" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!--
+        sqlMapGenreator 需要设置包名, 和存放映射文件的路径
+          targetProject: mapper映射文件生成的位置
+        -->
+        <sqlMapGenerator targetPackage="sqlmap" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!--
+        javaClientGenerator: 设置包名及路径
+          targetPackage: mapper接口生成的位置
+        -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="cn.zhitong.kcsj.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!--指定要生成的数据库表-->
+        <!--<table tableName="items" domainObjectName="Items" enableCountByExample="false"
+               enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false">
+        </table>-->
+        <table tableName="items"/>
+        <table tableName="orders" />
+        <table tableName="orderdetail" />
+        <table tableName="user" />
+
+
+        <!--有些表的字段需要指定 Java类型-->
+        <!--<table schema="" tableName="">
+            <columnOverride column="" javaType=""/>
+        </table>-->
+
+
+    </context>
+
+</generatorConfiguration>

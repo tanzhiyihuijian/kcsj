@@ -1,0 +1,98 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+
+    <!--组件扫描器-->
+    <!--扫描 Controller注解, 多个包之间用逗号隔开-->
+    <context:component-scan base-package="cn.zhitong.kcsj.controller" />
+
+
+
+    <!--mvc 注解驱动-->
+    <!--
+      spring mvc使用<mvc:annotation-driven>自动加载 RequestMappingHandlerMapping 和 RequestMappingHandlerAdapter
+      可以在 springmvc.xml中, 使用 <mvc:annotation-driven>代替注解的处理器适配器和映射器的配置
+    -->
+    <mvc:annotation-driven />
+
+
+
+
+    <!--处理器适配器-->
+
+    <!--非注解的处理器适配器-->
+    <!--
+      SimpleControllerHandlerAdapter简单控制器处理器适配器，
+      所有实现了org.springframework.web.servlet.mvc.Controller 接口的Bean通过此适配器进行适配、执行.
+    -->
+    <!--<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />-->
+
+    <!--
+      HttpRequestHandlerAdapter，http请求处理器适配器，
+      所有实现了org.springframework.web.HttpRequestHandler 接口的Bean通过此适配器进行适配、执行。
+    -->
+    <!--<bean class="org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter"/>-->
+
+    <!--注解的处理器适配器-->
+    <!--<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>-->
+
+
+
+
+
+    <!--处理器映射器-->
+
+    <!--非注解的处理器映射器-->
+    <!--
+      BeanNameUrlHandlerMapping
+      根据 bean的 name进行查找 Handler, 将 action的 url配置在 bean的 name中
+    -->
+    <!--<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />-->
+
+    <!--
+      SimpleUrlHandlerMapping是 BeanNameUrlHandlerMapping的增强版本, 他可以将 url和 bean的 id进行统一映射配置
+    -->
+    <!--<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+                <prop key="/items1.action">itemsList</prop>
+                <prop key="/items2.action">itemsList_2</prop>
+            </props>
+        </property>
+    </bean>
+    -->
+
+    <!--注解的处理器映射器-->
+    <!--<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>-->
+
+
+
+
+
+    <!--处理器 (Controller)-->
+    <!--<bean name="/items/items1.action" id="itemsList" class="cn.zhitong.kcsj.controller.ItemsList"/>-->
+    <!--<bean id="itemsList_2" class="cn.zhitong.kcsj.controller.ItemsList_2"/>-->
+
+
+    <!--视图解析器
+      InternalResourceViewResolver: 支持 jsp的视图解析器
+      viewClass: JstlView表示 jsp模版页面需要使用 jstl标签, 所以需要引入 jstl相关 jar包
+      prefix: 查找 jsp页面的前缀 (最终视图的地址为: prefix + viewName + suffix )
+      suffix: 后缀名
+    -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+
+</beans>
